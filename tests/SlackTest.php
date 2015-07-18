@@ -8,45 +8,32 @@
  */
 class SlackTest extends PHPUnit_Framework_TestCase
 {
+    protected $stack;
 
-    public function testPushAndPop()
+    protected function setUp()
     {
-        $stack = array();
-        $this->assertEquals( 0, count( $stack ) );
-        array_push( $stack, 'foo' );
-        $this->assertEquals( 'foo', $stack[ count( $stack ) - 1 ] );
-        $this->assertEquals( 1, count( $stack ) );
-        $this->assertEquals( 'foo', array_pop( $stack ) );
-        $this->assertEquals( 0, count( $stack ) );
+        $this->stack = array();
     }
+
 
     public function testEmpty()
     {
-        $stack = array();
-        $this->assertEmpty( $stack );
-
-        return $stack;
+        $this->assertTrue( empty( $this->stack ) );
     }
 
-    /**
-     * @depends testEmpty
-     */
 
-    public function testPush( array $stack )
+    public function testPush()
     {
-        array_push( $stack, 'foo' );
-        $this->assertEquals( 'foo', $stack[ count( $stack ) - 1 ] );
-        $this->assertNotEmpty( $stack );
+        array_push( $this->stack, 'foo' );
+        $this->assertEquals( 'foo', $this->stack[ count( $this->stack ) - 1 ] );
+        $this->assertFalse( empty( $this->stack ) );
 
-        return $stack;
     }
 
-    /**
-     * @depends testPush
-     */
-    public function testPop( array $stack )
+    public function testPop()
     {
-        $this->assertEquals( 'foo', array_pop( $stack ) );
-        $this->assertEmpty( $stack );
+        array_push( $this->stack, 'foo' );
+        $this->assertEquals( 'foo', array_pop( $this->stack ) );
+        $this->assertTrue( empty( $this->stack ) );
     }
 }
